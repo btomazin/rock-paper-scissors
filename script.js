@@ -99,7 +99,6 @@ function game() {
   let userVal = "init";
   let compVal;
  
-                           //&while user doesnt cancel 
   for (let i = 0; i < 5 && !isGameCancelled(userVal);i++){
 
     userVal = getValidInput();
@@ -112,10 +111,8 @@ function game() {
       updateScore(result); 
     }
   }
-    
 
-
-  if (!isGameCancelled(userVal)) { //if user didnt cancel game
+  if (!isGameCancelled(userVal)) { 
     calcWinner(userScore, compScore, tie);
   } else  
     console.log("Game cancelled."); 
@@ -128,9 +125,6 @@ function game() {
     else if (result ==3)
       compScore++;
   }
-
-
-
 }
 
 game();
