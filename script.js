@@ -72,7 +72,8 @@ function getValidInput() {
   let userInput = userPlay();
   //while user doesnt cancel
   while (userInput !== false) {
-    if (userInput === "Rock" || userInput === "Paper" || userInput === "Scissors")
+    if (userInput === "Rock" || userInput === "Paper" 
+        || userInput === "Scissors")
       return userInput;
     else {
       alert("Incorrect input");
@@ -94,9 +95,8 @@ function game() {
   let userScore = 0;
   let compScore = 0;
   let tie = 0;
-  let game = true;
 
-  let userVal = "init";
+  let userVal = "init"; //initalised so game doesnt cancel immediately 
   let compVal;
  
   for (let i = 0; i < 5 && !isGameCancelled(userVal);i++){
