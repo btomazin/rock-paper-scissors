@@ -1,8 +1,6 @@
 function computerPlay(){
-  //generate a random number less than 3
   const result = Math.floor(Math.random()*3);
-  //depending on the random num
-  //return the computers choice
+
   if (result === 0)
     return "Rock"; 
   else if (result === 1)
@@ -11,84 +9,128 @@ function computerPlay(){
     return "Scissors";
 }
 
+//input is formated for first letter Upper and rest lower
+function formatInput(userInput) {
+  userInput = userInput.toLowerCase();
+  userInput = userInput.charAt(0).toUpperCase() + userInput.slice(1);
+  return userInput;
+}
+
 function userPlay(){
-  //ask user for input of their turn
   let input = prompt("Rock Paper Scissors- What will you pick?");
-  if (input == null){//if input is not okay
-    userPlay(); //ask again
+
+  if (input == null){ //user cancelled
+    return false; 
   } else {
-    //format the input so it is consistant
-    input = input.toLowerCase();
-    input = input.charAt(0).toUpperCase() + input.slice(1);
-    //return the input
+    input = formatInput(input);
     return input;
   }
 }
-//method to calulate who won the game
+
 function calcWinner(userScore, compScore, tie) {
-  if (userScore > compScore) { //if user score is higher
-    console.log ("Congratulations, you won the game!"); //print user won
-  } else if (compScore > userScore) { //if computer score is higher
-    console.log ("Unfortunately, you lost the game!"); //print loss
-  } else {//otherwise its a tie
+  if (userScore > compScore) { 
+    console.log ("Congratulations, you won the game!"); 
+  } else if (compScore > userScore) { 
+    console.log ("Unfortunately, you lost the game!"); 
+  } else {
     console.log("The game is tied!")
   }
-  console.log(`(${userScore}:${compScore}:${tie})`); //print the score
+  //print the end score
+  console.log(`(${userScore}:${compScore}:${tie})`); 
 }
 
 function playRound(playerSelection, computerSelection) {
 
-  switch (true){  //where both players are equal
+  switch (true){  
     case (playerSelection === computerSelection):
-      return `You tied! Both picked ${playerSelection}`; //return a tie
-      break;      //where the players selection beats computers
+      return 1;   
     case (playerSelection === "Rock" && computerSelection === "Scissors"):
     case (playerSelection === "Paper" && computerSelection === "Rock"):
     case (playerSelection === "Scissors" && computerSelection === "Paper"):
-      return `You win! ${playerSelection} beats ${computerSelection}`; //return a win
-      break;      //where comps selection beats players
+      return 2; 
     case (playerSelection === "Rock" && computerSelection === "Paper"):
     case (playerSelection === "Paper" && computerSelection === "Scissors"):
     case (playerSelection === "Scissors" && computerSelection === "Rock"):
-      return `You lose! ${computerSelection} beats ${playerSelection}`; //return a loss
-      break;
-    default:  //otherwise, players input is a problem
-      alert("Incorrect input. Try again."); //ask again for their input
-      return playRound(userPlay(), computerSelection); //and run the round again
+      return 3; 
+    default:  
+      console.error("An error occured in round selection");
+      return false;
   }
 }
 
+function declareRoundWinner(result, playerSelect, compSelect) {
+  if (result == 1)
+     console.log( `You tied! Both picked ${playerSelect}`); 
+  else if (result == 2)
+    console.log(`You win! ${playerSelect} beats ${compSelect}`); 
+  else if (result == 3)
+    console.log(`You lose! ${compSelect} beats ${playerSelect}`); 
 
-// make a game method to handle the game
+}
+
+function getValidInput() {
+  let userInput = userPlay();
+  //while user doesnt cancel
+  while (userInput !== false) {
+    if (userInput === "Rock" || userInput === "Paper" || userInput === "Scissors")
+      return userInput;
+    else {
+      alert("Incorrect input");
+      userInput = userPlay();
+    }
+  }
+  return userInput;
+}
+
+function isGameCancelled(userValue) {
+  if (userValue === false)
+    return true;
+  else
+    return false;
+}
+
 function game() {
   // create variables to store the scores
   let userScore = 0;
   let compScore = 0;
   let tie = 0;
-  let winnerDeclarationMsg;
+  let game = true;
+
+  let userVal = "init";
+  let compVal;
  
-  // make a loop to run 5 game rounds
-  for (let i = 0; i < 5;i++){
-                 // run a round // prompt the user for their turn
-    winnerDeclarationMsg = playRound(userPlay(), computerPlay());
-    console.log(`Game ${i + 1}: ${winnerDeclarationMsg}`);
-    // update score
-    updateScore();
+                           //&while user doesnt cancel 
+  for (let i = 0; i < 5 && !isGameCancelled(userVal);i++){
+
+    userVal = getValidInput();
+    compVal = computerPlay();
+
+    if (!isGameCancelled(userVal)){
+      result = playRound(userVal, compVal);
+     
+      declareRoundWinner(result, userVal, compVal);
+      updateScore(result); 
+    }
+  }
+    
+
+
+  if (!isGameCancelled(userVal)) { //if user didnt cancel game
+    calcWinner(userScore, compScore, tie);
+  } else  
+    console.log("Game cancelled."); 
+
+  function updateScore(result) {
+    if (result == 1)
+      tie++;
+    else if (result == 2)
+      userScore++;
+    else if (result ==3)
+      compScore++;
   }
 
-  //Calculate winner and print the result
-  calcWinner(userScore, compScore, tie);
 
-  //method for updating score in game
-  function updateScore(){
-    if (winnerDeclarationMsg[4] === 'w') { //if the msg says P wins
-      userScore++; //increment player score
-    } else if (winnerDeclarationMsg[4] === 'l'){ //if msg says P loses
-      compScore++; //increment comp score
-    } else{
-      tie++; //else its a tie
-    }
-  } 
+
 }
 
 game();
