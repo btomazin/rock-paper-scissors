@@ -83,21 +83,24 @@ function getValidInput() {
   return userInput;
 }
 
-function isGameCancelled(userValue) {
-  if (userValue === false)
-    return true;
-  else
-    return false;
-}
-
 function game() {
   // create variables to store the scores
   let userScore = 0;
   let compScore = 0;
   let tie = 0;
 
+  const updateScore = result => {
+    (result == 1) ? tie++ :
+    (result == 2) ? userScore++ :
+        compScore++;
+  }
+
   let userVal = "init"; //initalised so game doesnt cancel immediately 
   let compVal;
+
+  const isGameCancelled = userValue => {
+    return (userValue === false) ? true : false;
+  }
  
   for (let i = 0; i < 5 && !isGameCancelled(userVal);i++){
 
@@ -117,14 +120,6 @@ function game() {
   } else  
     console.log("Game cancelled."); 
 
-  function updateScore(result) {
-    if (result == 1)
-      tie++;
-    else if (result == 2)
-      userScore++;
-    else if (result ==3)
-      compScore++;
-  }
 }
 
 game();
