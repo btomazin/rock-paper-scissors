@@ -112,6 +112,8 @@ function game() {
      
       declareRoundWinner(result, userVal, compVal);
       updateScore(result); 
+      if (result == 1)
+        i--;
     }
   }
 
