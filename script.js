@@ -28,15 +28,21 @@ function userPlay(){
 }
 
 function calcWinner(userScore, compScore, tie) {
+  const winMsg = document.createElement("div");
+  winMsg.setAttribute('id', 'winner');
+  winMsg.textContent = "test";
+ 
   if (userScore > compScore) { 
-    console.log ("Congratulations, you won the game!"); 
+    winMsg.textContent = "Congratulations, you won the game!"; 
   } else if (compScore > userScore) { 
-    console.log ("Unfortunately, you lost the game!"); 
+    winMsg.textContent = "Unfortunately, you lost the game!"; 
   } else {
-    console.log("The game is tied!")
+    winMsg.textContent = "The game is tied!";
   }
+  winMsg.textContent += ` (${userScore}:${compScore}:${tie})`;
+  document.getElementById("body").appendChild(winMsg);
+  document.querySelectorAll("button").forEach(b =>{b.disabled = true;});
   //print the end score
-  console.log(`(${userScore}:${compScore}:${tie})`); 
 }
 
 function playRound(playerSelection, computerSelection) {
@@ -59,12 +65,19 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function declareRoundWinner(result, playerSelect, compSelect) {
+  let roundMsg = document.createElement("div");
+  const body = document.querySelector("body");
+
+
   if (result == 1)
-     console.log( `You tied! Both picked ${playerSelect}`); 
+  roundMsg.textContent = `You tied! Both picked ${playerSelect}`; 
   else if (result == 2)
-    console.log(`You win! ${playerSelect} beats ${compSelect}`); 
+  roundMsg.textContent = `You win! ${playerSelect} beats ${compSelect}`; 
   else if (result == 3)
-    console.log(`You lose! ${compSelect} beats ${playerSelect}`); 
+  roundMsg.textContent = `You lose! ${compSelect} beats ${playerSelect}`;
+  
+
+  body.appendChild(roundMsg);
 
 }
 
@@ -93,15 +106,24 @@ function game() {
     (result == 1) ? tie++ :
     (result == 2) ? userScore++ :
         compScore++;
-  }
-
-  let userVal = "init"; //initalised so game doesnt cancel immediately 
-  let compVal;
-
-  const isGameCancelled = userValue => {
-    return (userValue === false) ? true : false;
-  }
- 
+  }  
+    const btns = document.querySelectorAll("button");
+    btns.forEach(btn => {
+      btn.addEventListener('click', e =>{
+        //console.log(e.target.id);
+        let usr = e.target.id;
+        let cpu = computerPlay();
+        let result = playRound(usr, cpu);
+        declareRoundWinner(result, usr, cpu);
+        updateScore(result); 
+        if (userScore === 5 || compScore ===5){
+          calcWinner(userScore, compScore, tie);
+          compScore = 0 , userScore = 0, tie = 0;
+        }
+        
+      })
+    });
+  
   // for (let i = 0; i < 5 && !isGameCancelled(userVal);i++){
 
   //   userVal = getValidInput();
@@ -117,22 +139,10 @@ function game() {
   //   }
   // }
 
-  if (!isGameCancelled(userVal)) { 
-    calcWinner(userScore, compScore, tie);
-  } else  
-    console.log("Game cancelled."); 
+
 
 }
 
 game();
 
-const btns = document.querySelectorAll("button");
-btns.forEach(b => {
-  b.addEventListener('click', e =>{
-    console.log(e.target.id);
-    let usr = e.target.id;
-    let cpu = computerPlay();
-    let result = playRound(usr, cpu);
-    declareRoundWinner(result, usr, cpu);
-  })
-})
+

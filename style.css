@@ -17,7 +17,7 @@ button:active{
 
 #Rock{
   background-color: rgb(116, 70, 40);
-  color: white;
+
 }
 #Paper{
   background-color:antiquewhite;
@@ -55,4 +55,10 @@ body{
 
 h1{
   margin: 0;
+}
+
+#winner{
+  padding: 5px;
+  font-size: 40px;
+  font-weight: 800;
 }
