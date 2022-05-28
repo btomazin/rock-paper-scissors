@@ -9,28 +9,9 @@ function computerPlay(){
     return "Scissors";
 }
 
-//input is formated for first letter Upper and rest lower
-function formatInput(userInput) {
-  userInput = userInput.toLowerCase();
-  userInput = userInput.charAt(0).toUpperCase() + userInput.slice(1);
-  return userInput;
-}
-
-function userPlay(){
-  let input = prompt("Rock Paper Scissors- What will you pick?");
-
-  if (input == null){ //user cancelled
-    return false; 
-  } else {
-    input = formatInput(input);
-    return input;
-  }
-}
-
 function calcWinner(userScore, compScore, tie) {
   const winMsg = document.createElement("div");
   winMsg.setAttribute('id', 'winner');
-  winMsg.textContent = "test";
  
   if (userScore > compScore) { 
     winMsg.textContent = "Congratulations, you won the game!"; 
@@ -39,14 +20,16 @@ function calcWinner(userScore, compScore, tie) {
   } else {
     winMsg.textContent = "The game is tied!";
   }
-  winMsg.textContent += ` (${userScore}:${compScore}:${tie})`;
+
   document.getElementById("body").appendChild(winMsg);
-  document.querySelectorAll("button").forEach(b =>{b.disabled = true;});
-  //print the end score
+
+  winMsg.textContent += " Refresh to play again."
+
+  //disable all buttons since game is over
+  document.querySelectorAll("button").forEach(b =>{b.disabled = true;});  
 }
 
 function playRound(playerSelection, computerSelection) {
-
   switch (true){  
     case (playerSelection === computerSelection):
       return 1;   
@@ -65,9 +48,7 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function declareRoundWinner(result, playerSelect, compSelect) {
-  let roundMsg = document.createElement("div");
-  const body = document.querySelector("body");
-
+  const roundMsg = document.getElementById("results");
 
   if (result == 1)
   roundMsg.textContent = `You tied! Both picked ${playerSelect}`; 
@@ -76,24 +57,6 @@ function declareRoundWinner(result, playerSelect, compSelect) {
   else if (result == 3)
   roundMsg.textContent = `You lose! ${compSelect} beats ${playerSelect}`;
   
-
-  body.appendChild(roundMsg);
-
-}
-
-function getValidInput() {
-  let userInput = userPlay();
-  //while user doesnt cancel
-  while (userInput !== false) {
-    if (userInput === "Rock" || userInput === "Paper" 
-        || userInput === "Scissors")
-      return userInput;
-    else {
-      alert("Incorrect input");
-      userInput = userPlay();
-    }
-  }
-  return userInput;
 }
 
 function game() {
@@ -105,41 +68,25 @@ function game() {
   const updateScore = result => {
     (result == 1) ? tie++ :
     (result == 2) ? userScore++ :
-        compScore++;
+        compScore++; //updating score variables
+        const h2 = document.getElementById('h2');
+        //update score on browser
+        h2.textContent = `Score(W:L:T):  (${userScore}:${compScore}:${tie})`;
   }  
     const btns = document.querySelectorAll("button");
     btns.forEach(btn => {
       btn.addEventListener('click', e =>{
-        //console.log(e.target.id);
-        let usr = e.target.id;
-        let cpu = computerPlay();
-        let result = playRound(usr, cpu);
+        let usr = e.target.id; //player selction
+        let cpu = computerPlay();//cpu selection
+        let result = playRound(usr, cpu); 
         declareRoundWinner(result, usr, cpu);
         updateScore(result); 
         if (userScore === 5 || compScore ===5){
           calcWinner(userScore, compScore, tie);
-          compScore = 0 , userScore = 0, tie = 0;
         }
-        
       })
     });
   
-  // for (let i = 0; i < 5 && !isGameCancelled(userVal);i++){
-
-  //   userVal = getValidInput();
-  //   compVal = computerPlay();
-
-  //   if (!isGameCancelled(userVal)){
-  //     result = playRound(userVal, compVal);
-     
-  //     declareRoundWinner(result, userVal, compVal);
-  //     updateScore(result); 
-  //     if (result == 1)
-  //       i--;
-  //   }
-  // }
-
-
 
 }
 
