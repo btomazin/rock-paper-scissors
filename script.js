@@ -102,20 +102,20 @@ function game() {
     return (userValue === false) ? true : false;
   }
  
-  for (let i = 0; i < 5 && !isGameCancelled(userVal);i++){
+  // for (let i = 0; i < 5 && !isGameCancelled(userVal);i++){
 
-    userVal = getValidInput();
-    compVal = computerPlay();
+  //   userVal = getValidInput();
+  //   compVal = computerPlay();
 
-    if (!isGameCancelled(userVal)){
-      result = playRound(userVal, compVal);
+  //   if (!isGameCancelled(userVal)){
+  //     result = playRound(userVal, compVal);
      
-      declareRoundWinner(result, userVal, compVal);
-      updateScore(result); 
-      if (result == 1)
-        i--;
-    }
-  }
+  //     declareRoundWinner(result, userVal, compVal);
+  //     updateScore(result); 
+  //     if (result == 1)
+  //       i--;
+  //   }
+  // }
 
   if (!isGameCancelled(userVal)) { 
     calcWinner(userScore, compScore, tie);
@@ -125,3 +125,14 @@ function game() {
 }
 
 game();
+
+const btns = document.querySelectorAll("button");
+btns.forEach(b => {
+  b.addEventListener('click', e =>{
+    console.log(e.target.id);
+    let usr = e.target.id;
+    let cpu = computerPlay();
+    let result = playRound(usr, cpu);
+    declareRoundWinner(result, usr, cpu);
+  })
+})

@@ -1,0 +1,58 @@
+
+button{
+  border: none;
+  padding: 15px 32px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 3px;
+  width: 150px;
+}
+
+button:active{
+  font-weight: bold;
+}
+
+#Rock{
+  background-color: rgb(116, 70, 40);
+  color: white;
+}
+#Paper{
+  background-color:antiquewhite;
+}
+
+#Rock:hover{
+  background-color: rgb(150, 96, 60);
+}
+
+#Paper:hover{
+  background-color:rgb(235, 209, 178);
+}
+
+#Scissors:hover{
+  background-color:rgb(156, 156, 156);
+}
+
+#header{
+  background-color: crimson;
+  border-bottom: 4px solid black;
+  font-size: 25px;
+  font-weight: 800;
+  padding: 10px 5px;
+}
+
+#body{
+  padding: 1vw 2vw;
+}
+
+body{
+  margin: 0;
+  font-family: sans-serif;
+  border: none;
+}
+
+h1{
+  margin: 0;
+}
