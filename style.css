@@ -11,6 +11,18 @@ button{
   width: 150px;
 }
 
+.buttons {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+@media screen and (min-width: 500px) {
+  .buttons{
+    flex-flow: row;
+  }
+}
+
 button:active{
   font-weight: bold;
 }
